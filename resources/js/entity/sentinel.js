@@ -22,6 +22,7 @@ export class Sentinel extends Entity {
   onMissRoute() {
     if(!this.tryToAttack(this.player)) {
       this.speed = this.normalSpeed;
+      this.needUpdate = true;
       this.findRoute();
     }
   }
@@ -40,7 +41,11 @@ export class Sentinel extends Entity {
 
     if(this.needUpdate) {      
       this.viewPoints = [];
-      for(let r = -0.5; r < 0.5; r += 0.05) {
+      let end = 0.5;     
+      if(this.speed === this.attackSpeed) {
+        end = Math.PI;
+      }
+      for(let r = -end; r <= end; r += 0.05) {
           let d = new Vec2(this.direction).rotate(r);
           let hit = this.level.ray(this.position, d, 200);
           if(hit) {
@@ -59,6 +64,7 @@ export class Sentinel extends Entity {
     if(this.isVisible(entity)) {
       super.walkTo(entity.position.x, entity.position.y);
       this.speed = this.attackSpeed;
+      this.needUpdate = true;
       return true;
     }
 
