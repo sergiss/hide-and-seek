@@ -1,0 +1,16 @@
+Un pixel: 
+ 
+    Tiene 100 puntos de vida.
+    Puede cargar con un máximo de 10 objetos.
+    Un pixel es compañero si es del mismo color.
+    No puede atacar a pixeles compañeros.
+    Puede atacar a pixeles enemigos.
+    La misión de un pixel és recolectar recursos.
+
+Recursos:
+
+    Plantas: verde
+    Piedra: gris
+    Oro: amarillo
+    Agua: azul
+
