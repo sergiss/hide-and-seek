@@ -1,3 +1,5 @@
+import { Vec2 } from "../vec2.js";
+
 function moveTo(a, b, step, direction) {
     let x = b.x - a.x;
     let y = b.y - a.y;
@@ -50,4 +52,23 @@ function polygonContains(vertices, x, y) {
     return (intersects & 1) == 1;
 }
 
-export {moveTo, interpolate, computeColor};
+function intersectSegmentCircle (p1, p2, center, squareRadius) {
+    let tmp = new Vec2(p2).sub(p1);
+    let l = tmp.len();
+    if(l !== 0) tmp.scl(1.0 / l);
+    let u = tmp.dot(center.x - p1.x, center.y - p1.y);
+    if (u <= 0) {
+        tmp.set(p1);
+    } else if (u >= l) {
+        tmp.set(p2);
+    } else {
+        tmp.scl(u).add(p1);
+    }
+
+    let x = center.x - tmp.x;
+    let y = center.y - tmp.y;
+
+    return x * x + y * y <= squareRadius;
+}
+
+export {moveTo, interpolate, computeColor, intersectSegmentCircle};

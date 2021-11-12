@@ -1,4 +1,5 @@
 import { Level } from "../level.js";
+import { intersectSegmentCircle } from "../utils/utils.js";
 import { Vec2 } from "../vec2.js";
 import { Entity } from "./entity.js";
 
@@ -11,7 +12,7 @@ export class Sentinel extends Entity {
     this.breakTime = 250;
     this.time = 0;
 
-    this.attackSpeed = 15;
+    this.attackSpeed = 9;
     this.normalSpeed = 5;
     this.speed = this.normalSpeed;
 
@@ -19,7 +20,7 @@ export class Sentinel extends Entity {
   }
 
   onMissRoute() {
-    if(!this.tryToAttack(this.player.position)) {
+    if(!this.tryToAttack(this.player)) {
       this.speed = this.normalSpeed;
       this.findRoute();
     }
@@ -49,14 +50,14 @@ export class Sentinel extends Entity {
     }
 
     if(this.speed !== this.attackSpeed) {
-      this.tryToAttack(this.player.position);
+      this.tryToAttack(this.player);
     }    
   }
 
-  tryToAttack(position) {
+  tryToAttack(entity) {
 
-    if(this.contains(position)) {
-      super.walkTo(position.x, position.y);
+    if(this.isVisible(entity)) {
+      super.walkTo(entity.position.x, entity.position.y);
       this.speed = this.attackSpeed;
       return true;
     }
@@ -64,12 +65,25 @@ export class Sentinel extends Entity {
     return false;
   }
 
+  isVisible(entity) {
+    if(this.viewPoints && this.viewPoints.length > 1) {
+      let center = this.position;
+      for(let i = 0; i < this.viewPoints.length; ++i) {
+        let p = this.viewPoints[i];
+        if(intersectSegmentCircle(center, p, entity.position, entity.radius * entity.radius)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
   render(camera) {        
-    if(this.viewPoints && this.viewPoints.length > 0) {
+    if(this.viewPoints && this.viewPoints.length > 1) {
       let context = camera.context;
       context.save();
       context.globalAlpha = 0.25;
-      context.fillStyle = '#5F5';
+      context.fillStyle = this.speed == this.normalSpeed ? '#5F5' : '#F55';
       context.beginPath();
       context.moveTo(this.position.x, this.position.y);
       for(let i = 0; i < this.viewPoints.length; ++i) {
