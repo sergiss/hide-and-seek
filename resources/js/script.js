@@ -15,7 +15,7 @@ const create = ()=> {
   level.addAtRandomLocation(player);
   sentinels = [];
   for(let i = 0; i < 5; ++i) {
-    let sentinel = new Sentinel((level.cols - 1) * 32, (level.rows - 1) * 32, level);
+    let sentinel = new Sentinel((level.cols - 1) * Level.TILE_SIZE, (level.rows - 1) * Level.TILE_SIZE, level);
     sentinel.player = player;
     level.add(sentinel);
     sentinels.push(sentinel);

@@ -71,4 +71,23 @@ function intersectSegmentCircle (p1, p2, center, squareRadius) {
     return x * x + y * y <= squareRadius;
 }
 
-export {moveTo, interpolate, computeColor, intersectSegmentCircle};
+function renderPolygon(context, viewPoints, fillStyle, alpha = 1) {
+    if(viewPoints && viewPoints.length > 2) {
+        context.save();
+        context.globalAlpha = alpha;
+        context.fillStyle = fillStyle;
+        context.beginPath();
+        const startPoint = viewPoints[0];
+        context.moveTo(startPoint.x, startPoint.y);
+        for(let i = 1; i < viewPoints.length; ++i) {
+            let p = viewPoints[i];
+            context.lineTo(p.x,p.y);
+        }
+        context.lineTo(startPoint.x, startPoint.y);
+        context.closePath();
+        context.fill();
+        context.restore();
+      }
+}
+
+export {moveTo, interpolate, computeColor, intersectSegmentCircle, renderPolygon};

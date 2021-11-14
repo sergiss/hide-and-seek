@@ -1,3 +1,4 @@
+import { renderPolygon } from "../utils/utils.js";
 import { Vec2 } from "../vec2.js";
 import { PointLight } from "./point-light.js";
 
@@ -21,6 +22,17 @@ export class Player extends PointLight {
             }
         }
 
+        /*if(this.needUpdate) {      
+            this.viewPoints = this.computeViewPoints(0.5, 200);
+        }*/
+
     }
+
+    // TODO : comment
+   /* render(camera) {
+        let fillStyle = '#5F5';
+        renderPolygon(camera.context, [this.position, ...this.viewPoints], fillStyle, 0.25);
+        super.render(camera)
+    }*/
 
 }

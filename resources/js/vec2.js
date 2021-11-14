@@ -53,6 +53,8 @@ export class Vec2 {
       if (x instanceof Vec2) {
           y = x.y;
           x = x.x;
+      } else if(!y){
+        y = x;
       }
       this.x += x;
       this.y += y;
@@ -66,6 +68,18 @@ export class Vec2 {
       }
       this.x -= x;
       this.y -= y;
+      return this;
+    }
+
+    div(x, y) {
+      if (x instanceof Vec2) {
+          y = x.y;
+          x = x.x;
+      } else if(!y){
+        y = x;
+      }
+      this.x /= x;
+      this.y /= y;
       return this;
     }
   

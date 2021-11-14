@@ -22,6 +22,7 @@ export class Entity {
 
         this.lastPosition = new Vec2(-1, -1);
         this.needUpdate = false;
+        
     }
 
     render(camera) {        
@@ -97,6 +98,18 @@ export class Entity {
 		let distance = dx * dx + dy * dy;
 		let radiusSum = this.radius + e.radius;
 		return distance < radiusSum * radiusSum;
+    }
+
+    computeViewPoints(angle = 0.5, distance = 200) {
+        let result = [];
+        for(let r = -angle; r <= angle; r += 0.05) {
+            let d = new Vec2(this.direction).rotate(r);
+            let hit = this.level.ray(this.position, d, distance);
+            if(hit) {
+                result.push(hit);               
+            }
+        }
+        return result;
     }
     
 }

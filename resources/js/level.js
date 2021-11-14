@@ -1,5 +1,6 @@
 import { AStar, Grid, Node } from "./utils/astar.js";
-import { computeColor } from "./utils/utils.js";
+import { Random } from "./utils/random.js";
+import { computeColor} from "./utils/utils.js";
 import { Vec2 } from "./vec2.js";
 
 class LevelNode extends Node {
@@ -31,24 +32,27 @@ export class Level extends Grid {
     this.rows = rows;
 
     this.aStar = new AStar(this);
+    this.random = new Random();
     this.clear();
   }
 
   ray (position, normal, dst) {
 
-    let p0 = new Vec2(position);
-    let p1 = new Vec2(normal).scl(dst).add(position);
+    const e = 0.0001;
 
-    var difX = p1.x - p0.x;
-    var difY = p1.y - p0.y;
-    var dist = Math.abs(difX) + Math.abs(difY);
+    const p0 = new Vec2(position).div(Level.TILE_SIZE).floor().scl(Level.TILE_SIZE).add(Level.TILE_SIZE * 0.5);
+    const p1 = new Vec2(normal).scl(dst).add(position);
 
-    var dx = difX / dist;
-    var dy = difY / dist;
+    const difX = p1.x - p0.x;
+    const difY = p1.y - p0.y;
+    const dist = Math.abs(difX) + Math.abs(difY);
 
-    for (let x, y, wx, wy, i = 0; i <= Math.ceil(dist); i++) {
-      wx = p0.x + dx * i;
-      wy = p0.y + dy * i;
+    let dx = difX / dist;
+    let dy = difY / dist;
+
+    for (let x, y, wx, wy, i = 0; i <= dist; i++) {
+      wx = p0.x + dx * i + e;
+      wy = p0.y + dy * i + e;
 
       x = Math.floor(wx / Level.TILE_SIZE);
       y = Math.floor(wy / Level.TILE_SIZE);
@@ -73,7 +77,7 @@ export class Level extends Grid {
       this.data = [];
       for (let node, j, i = 0; i < this.cols; ++i) {
         for (j = 0; j < this.rows; ++j) {
-          node = new LevelNode(i, j, Math.random() > 0.75 ? 1 : 0);
+          node = new LevelNode(i, j, this.random.nextFloat() > 0.75 ? 1 : 0);
           this.data[i + j * this.cols] = node;
         }
       }
@@ -101,7 +105,7 @@ export class Level extends Grid {
   getRandomLocation(free) {
     let result;
     do {
-      result = new Vec2(Math.floor(Math.random() * this.cols), Math.floor(Math.random() * this.rows));
+      result = new Vec2(Math.floor(this.random.nextFloat() * this.cols), Math.floor(this.random.nextFloat() * this.rows));
     } while(free && (this.getNode(result.x, result.y).isObstacle() || !this.isPositionAccessible(result.x, result.y)));
     return result.scl(Level.TILE_SIZE).add(Level.TILE_SIZE * 0.5, Level.TILE_SIZE * 0.5);
   }
