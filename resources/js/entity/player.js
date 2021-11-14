@@ -6,8 +6,7 @@ export class Player extends PointLight {
 
     constructor(x, y, level) {
         super(x, y, level);
-        super.color = '#00AFF0'
-
+        super.color = '#00AFF0';
         this.light = 0;
         this.speed = 10;
     }

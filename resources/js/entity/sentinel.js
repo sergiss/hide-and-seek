@@ -14,7 +14,7 @@ export class Sentinel extends Entity {
 
     this.viewAngle = 0.4;
 
-    this.attackSpeed = 9;
+    this.attackSpeed = 8;
     this.normalSpeed = 5;
     this.speed = this.normalSpeed;
 
@@ -29,6 +29,16 @@ export class Sentinel extends Entity {
     }
   }
 
+  tryToAttack(entity) {
+    if(this.isVisible(entity)) {
+      super.walkTo(entity.position.x, entity.position.y);
+      this.speed = this.attackSpeed;
+      this.needUpdate = true;
+      return true;
+    }
+    return false;
+  }
+
   findRoute() {
     new Promise(() => {
       this.time = 0;
@@ -41,26 +51,12 @@ export class Sentinel extends Entity {
   update(dt) {
     super.update(dt);
 
-    if(this.needUpdate) {      
+    if(this.needUpdate) {
       const angle = this.speed === this.attackSpeed ? Math.PI : this.viewAngle;
       this.viewPoints = this.computeViewPoints(angle, 200);
-    }
-
-    if(this.speed !== this.attackSpeed) {
       this.tryToAttack(this.player);
     }    
-  }
-
-  tryToAttack(entity) {
-
-    if(this.isVisible(entity)) {
-      super.walkTo(entity.position.x, entity.position.y);
-      this.speed = this.attackSpeed;
-      this.needUpdate = true;
-      return true;
-    }
-
-    return false;
+      
   }
 
   isVisible(entity) {

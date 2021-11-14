@@ -10,11 +10,11 @@ const camera = new Camera(canvas);
 var level, player, sentinels;
 
 const create = ()=> {
-  level = new Level(20, 20);
+  level = new Level(25, 25);
   player = new Player(0, 0, level);
   level.addAtRandomLocation(player);
   sentinels = [];
-  for(let i = 0; i < 5; ++i) {
+  for(let i = 0; i < 10; ++i) {
     let sentinel = new Sentinel((level.cols - 1) * Level.TILE_SIZE, (level.rows - 1) * Level.TILE_SIZE, level);
     sentinel.player = player;
     level.add(sentinel);
