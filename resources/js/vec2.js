@@ -29,20 +29,15 @@
  */
 export class Vec2 {
     constructor(x = 0, y = 0) {
-  
-      if (x instanceof Vec2) {
-          y = x.y;
-          x = x.x;
-      }
-  
-      this.x = x;
-      this.y = y;
+     this.set(x, y);
     }
   
     set(x, y) {
       if (x instanceof Vec2) {
           y = x.y;
           x = x.x;
+      } else if(!y){
+        y = x;
       }
       this.x = x;
       this.y = y;
@@ -65,6 +60,8 @@ export class Vec2 {
       if (x instanceof Vec2) {
           y = x.y;
           x = x.x;
+      } else if(!y){
+        y = x;
       }
       this.x -= x;
       this.y -= y;
@@ -152,6 +149,8 @@ export class Vec2 {
       if (x instanceof Vec2) {
         y = x.y;
         x = x.x;
+      } else if(!y){
+        y = x;
       }
       return this.x * x + this.y * y;
     }
