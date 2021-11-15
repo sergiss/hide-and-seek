@@ -3,6 +3,6 @@
 
 [Live Demo](https://sergiss.github.io/hide-and-seek/)
 
-![Hide-and-seek Game](https://raw.githubusercontent.com/sergiss/simon/master/hide-and-seek.gif)
+![Hide-and-seek Game](https://github.com/sergiss/hide-and-seek/blob/master/hide-and-seek.gif?raw=true)
 
 https://sergiosoriano.com/
